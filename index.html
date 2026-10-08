@@ -1,11 +1,258 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f9f5ff"><title>PawCraft Studio | Create Your Dream Virtual Pet</title><link rel="stylesheet" href="style.css"><script defer src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script><script defer src="script.js"></script></head>
-<body><header class="topbar"><a class="brand" href="#home">🐾 PawCraft<span>Studio</span></a><nav aria-label="Main navigation"><a href="#gallery" data-i18n="navGallery">Gallery</a><a href="#customize" data-i18n="navCustomize">Customize</a><a href="#commissions" data-i18n="navOrders">Commissions</a><a href="#how" data-i18n="navHow">How it works</a></nav><div class="topactions"><button id="langBtn" class="ghost" aria-label="Switch language">中文</button><button id="connectBtn" class="primary" data-i18n="connect">Connect Wallet</button></div></header>
-<main><section id="home" class="hero wrap"><div><span class="eyebrow">✦ DIGITAL PET ART · ETHEREUM SEPOLIA</span><h1 data-i18n="heroTitle">A little magic.<br>A pet that's <em>all yours.</em></h1><p data-i18n="heroDesc">Turn your imagination into custom pet artwork. Design with our studio, then pay with transparent blockchain escrow.</p><div class="row"><a class="primary linkbtn" href="#gallery" data-i18n="explore">Explore designs ↗</a><a class="outline linkbtn" href="#customize" data-i18n="start">Start a commission</a></div><div class="micro" data-i18n="testnet">Demo project · Sepolia test ETH only · Not an NFT</div></div><div class="hero-art"><div class="orb orb1"></div><div class="orb orb2"></div><div class="pet bigpet">🐱<span>✦</span></div><div class="floating one">✧ made for you</div><div class="floating two">☁ cozy magic</div></div></section>
-<section id="gallery" class="section alt"><div class="wrap"><div class="sectionhead"><div><span class="eyebrow">THE COLLECTION</span><h2 data-i18n="galleryTitle">Meet your next little companion</h2><p data-i18n="galleryDesc">These are inspiration samples, not on-chain orders. Final design and price are discussed with the studio.</p></div></div><div id="galleryGrid" class="gallery-grid"></div></div></section>
-<section id="customize" class="section"><div class="wrap split"><div><span class="eyebrow">MAKE IT YOURS</span><h2 data-i18n="customTitle">Tell us about your dream pet</h2><p data-i18n="customDesc">Build a design brief and send it to our studio. Your request stays off-chain; no information is submitted to a server.</p><div class="note"><b data-i18n="noteTitle">Before payment</b><p data-i18n="noteText">Agree on the artwork, price and delivery time with the studio first. Then the studio creates a blockchain commission.</p></div></div><form id="requestForm" class="panel"><label><span data-i18n="petType">Pet type</span><select id="petType"><option>Cat</option><option>Dog</option><option>Dragon</option><option>Fox</option><option>Rabbit</option><option>Other</option></select></label><label><span data-i18n="artStyle">Art style</span><select id="artStyle"><option>Cute</option><option>Pixel Art</option><option>Fantasy</option><option>Cartoon</option></select></label><label><span data-i18n="mainColor">Main color</span><input id="mainColor" maxlength="60" placeholder="Lavender, cream, pink..."></label><label><span data-i18n="accessories">Accessories</span><input id="accessories" maxlength="100" placeholder="Wizard hat, ribbon..."></label><label><span data-i18n="special">Special requests</span><textarea id="special" maxlength="1000" rows="3" placeholder="Describe your pet's personality..."></textarea></label><button class="primary full" type="submit" data-i18n="prepare">Prepare request</button><div id="requestResult" hidden><label><span data-i18n="brief">Your commission brief</span><textarea id="briefOutput" rows="9" readonly></textarea></label><button id="copyBtn" class="outline" type="button" data-i18n="copy">Copy request</button><button id="discordBtn" class="outline" type="button" data-i18n="discord">Contact via Discord</button></div><small id="discordHint" class="muted"></small></form></div></section>
-<section id="commissions" class="section alt"><div class="wrap"><span class="eyebrow">ON-CHAIN COMMISSIONS</span><h2 data-i18n="ordersTitle">Your commission desk</h2><p data-i18n="ordersDesc">Real orders are read from the deployed Sepolia smart contract. Any wallet can create an order; only the original buyer can confirm delivery.</p><div class="walletstrip"><div><b data-i18n="wallet">Wallet</b><div id="walletAddress">Not connected</div></div><div><b data-i18n="network">Network</b><div id="networkValue">—</div></div><div><b data-i18n="count">Orders</b><div id="countValue">—</div></div><button id="refreshBtn" class="outline" data-i18n="refresh">Refresh</button></div><div class="split orders-split"><div class="panel"><h3 data-i18n="createTitle">Create a commission</h3><p class="muted" data-i18n="createDesc">Studio wallet: create an order only after agreeing on the details with your customer.</p><form id="createForm"><label><span data-i18n="orderName">Commission name</span><input id="orderName" maxlength="100" required placeholder="Magic Cat · custom artwork"></label><label><span data-i18n="price">Price (test ETH)</span><input id="orderPrice" type="text" inputmode="decimal" required placeholder="0.001"></label><button class="primary full" type="submit" data-i18n="createBtn">Create on Sepolia</button></form><small class="muted" data-i18n="publicWarning">Orders are public: the contract cannot reserve one for a specific customer.</small></div><div><div class="filters"><button class="filter active" data-filter="all" data-i18n="all">All</button><button class="filter" data-filter="mine" data-i18n="mine">My orders</button><button class="filter" data-filter="available" data-i18n="available">Available</button></div><div id="ordersList" class="orderlist"><div class="empty">Connect MetaMask to load commissions.</div></div></div></div></div></section>
-<section id="how" class="section"><div class="wrap"><span class="eyebrow">SIMPLE & TRANSPARENT</span><h2 data-i18n="howTitle">How PawCraft works</h2><div id="stepsGrid" class="steps"></div></div></section>
-<section id="contract" class="section alt"><div class="wrap contractbox"><div><span class="eyebrow">POWERED BY ETHEREUM</span><h2 data-i18n="chainTitle">A little art, backed by smart contracts</h2><p data-i18n="chainDesc">The contract stores commission name, price, seller, buyer, payment timestamp and status. Artwork, briefs and Discord conversations stay off-chain.</p><p class="muted" data-i18n="limits">Limitations: no artwork verification, no buyer-specific reservation, and refunds only after seven days in Paid status.</p></div><div class="panel"><b>Ethereum Sepolia</b><p class="mono address" id="contractAddress"></p><a id="contractLink" target="_blank" rel="noopener noreferrer" data-i18n="viewContract">View smart contract ↗</a><div class="tiny" data-i18n="noReal">Test ETH has no real monetary value.</div></div></div></section></main><footer><div class="wrap footerrow"><b>🐾 PawCraft Studio</b><span>Create Your Dream Virtual Pet.</span><span>Made for a Sepolia DApp demo · 2026</span></div></footer>
-<div id="toast" role="status" aria-live="polite" class="toast" hidden></div><div id="busyOverlay" class="busy" hidden><div class="busycard"><div class="spinner"></div><p id="busyText">Waiting for MetaMask...</p><a id="busyLink" href="#" target="_blank" rel="noopener noreferrer" hidden>View on Etherscan ↗</a></div></div>
-</body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f9f5ff">
+  <title>PawCraft Studio | Create Your Dream Virtual Pet</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#welcome" id="brandLink">🐾 PawCraft <span>Studio</span></a>
+    <nav id="customerNav" aria-label="Customer navigation" hidden>
+      <a href="#customerHome" data-i18n="navHome">Home</a>
+      <a href="#gallery" data-i18n="navGallery">Art Styles</a>
+      <a href="#customize" data-i18n="navCustomize">Customize</a>
+      <a href="#customerOrders" data-i18n="navOrders">My Orders</a>
+      <a href="#how" data-i18n="navHow">How It Works</a>
+    </nav>
+    <nav id="creatorNav" aria-label="Creator navigation" hidden>
+      <a href="#creatorDashboard" data-i18n="navDashboard">Dashboard</a>
+      <a href="#createPayment" data-i18n="navCreatePayment">Create Payment Request</a>
+      <a href="#creatorOrders" data-i18n="navManageOrders">Manage Orders</a>
+    </nav>
+    <div class="topactions">
+      <button id="langBtn" class="ghost" type="button" aria-label="Switch language" title="Language / 语言">中文</button>
+      <button id="connectBtn" class="primary" type="button" data-i18n="connect" title="Connect MetaMask wallet">Connect Wallet</button>
+      <button id="switchRoleBtn" class="outline" type="button" data-i18n="switchRole" title="Return to role selection" hidden>Switch Role</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Role selection is navigation, not authorization. Creator actions must verify wallet. -->
+    <section id="welcome" class="section role-welcome wrap">
+      <span class="eyebrow">PAWCRAFT STUDIO · ETHEREUM SEPOLIA</span>
+      <h1 data-i18n="welcomeTitle">Welcome to PawCraft</h1>
+      <p class="lead" data-i18n="welcomeSubtitle">Create Your Dream Virtual Pet.</p>
+      <h2 data-i18n="chooseRole">How would you like to continue?</h2>
+      <div class="role-grid">
+        <button id="chooseCreatorBtn" class="role-card" type="button" aria-describedby="creatorRoleDesc">
+          <span class="role-icon" aria-hidden="true">🎨</span>
+          <strong data-i18n="creatorRole">I'm a Creator</strong>
+          <span id="creatorRoleDesc" data-i18n="creatorRoleDesc">Manage studio commissions and payment requests.</span>
+          <span class="role-link" data-i18n="enterCreator">Enter Creator Studio →</span>
+        </button>
+        <button id="chooseCustomerBtn" class="role-card" type="button" aria-describedby="customerRoleDesc">
+          <span class="role-icon" aria-hidden="true">🐾</span>
+          <strong data-i18n="customerRole">I'm a Customer</strong>
+          <span id="customerRoleDesc" data-i18n="customerRoleDesc">Explore art styles and design your dream pet.</span>
+          <span class="role-link" data-i18n="enterCustomer">Explore PawCraft →</span>
+        </button>
+      </div>
+      <p class="micro" data-i18n="roleNotice">Choosing a role changes the interface, not blockchain permissions. Test ETH only.</p>
+    </section>
+
+    <div id="customerView" class="role-view" hidden>
+      <section id="customerHome" class="hero wrap">
+        <div>
+          <span class="eyebrow">✦ DIGITAL PET ART · ETHEREUM SEPOLIA</span>
+          <h1 data-i18n="heroTitle">A little magic.<br>A pet that's <em>all yours.</em></h1>
+          <p data-i18n="heroDesc">Choose an art style, discuss your commission with our studio, and pay through transparent blockchain escrow.</p>
+          <div class="row">
+            <a class="primary linkbtn" href="#gallery" data-i18n="explore">Explore art styles ↗</a>
+            <a class="outline linkbtn" href="#customize" data-i18n="start">Customize your pet</a>
+          </div>
+          <p class="micro" data-i18n="testnet">Sepolia test ETH only · Artwork is not an NFT</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orb orb1"></div><div class="orb orb2"></div>
+          <div class="pet bigpet">🐱<span>✦</span></div>
+          <div class="floating one">✧ made for you</div>
+          <div class="floating two">☁ cozy magic</div>
+        </div>
+      </section>
+
+      <section id="gallery" class="section alt">
+        <div class="wrap">
+          <span class="eyebrow">OUR ART STYLES</span>
+          <h2 data-i18n="galleryTitle">Explore Our Art Styles</h2>
+          <p data-i18n="galleryDesc">Choose your favorite art style and create a pet that is uniquely yours.</p>
+          <!-- Populated by script.js v1.2: Kawaii, Pixel, Fantasy, Chibi, Watercolor, Cartoon -->
+          <div id="galleryGrid" class="gallery-grid"></div>
+        </div>
+      </section>
+
+      <section id="customize" class="section">
+        <div class="wrap split">
+          <div>
+            <span class="eyebrow">MAKE IT YOURS</span>
+            <h2 data-i18n="customTitle">Customize Your Pet</h2>
+            <p data-i18n="customDesc">Prepare a detailed commission request, then discuss the final design, price and delivery time with PawCraft Studio on Discord.</p>
+            <div class="note">
+              <b data-i18n="noteTitle">Before payment</b>
+              <p data-i18n="noteText">Your customization details are not stored on-chain. The studio creates a payment request only after you agree on the service.</p>
+            </div>
+          </div>
+          <form id="requestForm" class="panel">
+            <label><span data-i18n="petType">Pet Type</span>
+              <select id="petType" required>
+                <option value="Cat">Cat</option><option value="Dog">Dog</option>
+                <option value="Dragon">Dragon</option><option value="Fox">Fox</option>
+                <option value="Rabbit">Rabbit</option><option value="Other">Other</option>
+              </select>
+            </label>
+            <label><span data-i18n="artStyle">Art Style</span>
+              <select id="artStyle" required>
+                <option value="Kawaii Style">Kawaii Style</option>
+                <option value="Pixel Art">Pixel Art</option>
+                <option value="Fantasy Style">Fantasy Style</option>
+                <option value="Chibi Style">Chibi Style</option>
+                <option value="Watercolor Style">Watercolor Style</option>
+                <option value="Cartoon Style">Cartoon Style</option>
+              </select>
+            </label>
+            <label><span data-i18n="mainColor">Main Color</span>
+              <input id="mainColor" type="text" maxlength="60" required placeholder="Lavender, cream, pink...">
+            </label>
+            <label><span data-i18n="accessories">Accessories</span>
+              <input id="accessories" type="text" maxlength="100" placeholder="Wizard hat, ribbon...">
+            </label>
+            <label><span data-i18n="personality">Pet Personality</span>
+              <select id="personality">
+                <option value="Playful">Playful</option><option value="Calm">Calm</option>
+                <option value="Brave">Brave</option><option value="Shy">Shy</option>
+                <option value="Mysterious">Mysterious</option>
+              </select>
+            </label>
+            <label><span data-i18n="background">Background</span>
+              <select id="background">
+                <option value="Transparent">Transparent</option>
+                <option value="Solid Color">Solid Color</option>
+                <option value="Forest">Forest</option>
+                <option value="Fantasy World">Fantasy World</option>
+                <option value="Custom">Custom</option>
+              </select>
+            </label>
+            <label><span data-i18n="discordUsername">Discord Username</span>
+              <input id="discordUsername" type="text" maxlength="80" autocomplete="off" placeholder="Your Discord username">
+            </label>
+            <label><span data-i18n="special">Special Requests</span>
+              <textarea id="special" maxlength="1000" rows="4" placeholder="Describe additional details..."></textarea>
+            </label>
+            <button class="primary full" type="submit" data-i18n="prepare">Generate Commission Request</button>
+            <div id="requestResult" hidden>
+              <label><span data-i18n="brief">Your Commission Request</span>
+                <textarea id="briefOutput" rows="11" readonly></textarea>
+              </label>
+              <div class="row">
+                <button id="copyBtn" class="outline" type="button" data-i18n="copy">Copy Request</button>
+                <button id="discordBtn" class="outline" type="button" data-i18n="discord">Contact Studio on Discord</button>
+              </div>
+            </div>
+            <small id="discordHint" class="muted" aria-live="polite"></small>
+          </form>
+        </div>
+      </section>
+
+      <section id="customerOrders" class="section alt">
+        <div class="wrap">
+          <span class="eyebrow">CUSTOMER DASHBOARD</span>
+          <h2 data-i18n="customerOrdersTitle">Find Your Commission</h2>
+          <p data-i18n="customerOrdersDesc">Enter the commission ID given to you by PawCraft Studio. Check the official studio address and price before paying.</p>
+          <form id="findCommissionForm" class="panel find-form">
+            <label for="commissionIdInput" data-i18n="commissionId">Commission ID</label>
+            <input id="commissionIdInput" type="number" min="0" step="1" required placeholder="e.g. 15">
+            <button class="primary" type="submit" data-i18n="findCommission">Find Commission</button>
+          </form>
+          <div id="foundCommission" aria-live="polite"></div>
+          <h3 data-i18n="myPaidOrders">My Paid Commissions</h3>
+          <div id="customerOrdersList" class="orderlist"></div>
+        </div>
+      </section>
+
+      <section id="how" class="section">
+        <div class="wrap">
+          <span class="eyebrow">SIMPLE & TRANSPARENT</span>
+          <h2 data-i18n="howTitle">How PawCraft Works</h2>
+          <div id="stepsGrid" class="steps"></div>
+        </div>
+      </section>
+    </div>
+
+    <div id="creatorView" class="role-view" hidden>
+      <section id="creatorDashboard" class="section wrap">
+        <span class="eyebrow">CREATOR STUDIO</span>
+        <h1 data-i18n="creatorDashboardTitle">Studio Dashboard</h1>
+        <p data-i18n="creatorDashboardDesc">Manage commission payments using the official PawCraft Studio wallet.</p>
+        <div id="creatorAccessNotice" class="note" role="status" aria-live="polite">
+          <strong data-i18n="creatorRestricted">Creator Access Restricted</strong>
+          <p data-i18n="creatorRestrictedDesc">Connect the official PawCraft Studio wallet to create and manage payment requests.</p>
+        </div>
+        <div id="creatorStats" class="stats-grid">
+          <div class="panel"><b data-i18n="totalCommissions">Total Commissions</b><div id="studioTotal">—</div></div>
+          <div class="panel"><b data-i18n="awaitingPayment">Awaiting Payment</b><div id="studioAvailable">—</div></div>
+          <div class="panel"><b data-i18n="inProgress">In Progress</b><div id="studioPaid">—</div></div>
+          <div class="panel"><b data-i18n="completed">Completed</b><div id="studioCompleted">—</div></div>
+        </div>
+      </section>
+      <section id="createPayment" class="section alt">
+        <div class="wrap">
+          <span class="eyebrow">STUDIO ONLY</span>
+          <h2 data-i18n="createTitle">Create Payment Request</h2>
+          <p data-i18n="createDesc">Create a payment request only after agreeing on the artwork, price and delivery time with your customer.</p>
+          <form id="createForm" class="panel payment-form">
+            <label><span data-i18n="orderName">Commission Name</span>
+              <input id="orderName" maxlength="100" required placeholder="Custom fantasy pet portrait">
+            </label>
+            <label><span data-i18n="price">Price (test ETH)</span>
+              <input id="orderPrice" type="text" inputmode="decimal" required placeholder="0.001">
+            </label>
+            <button class="primary full" type="submit" data-i18n="createBtn">Create Payment Request</button>
+          </form>
+          <p class="micro" data-i18n="publicWarning">The contract does not reserve a commission for a specific buyer. Share its ID privately and verify details.</p>
+        </div>
+      </section>
+      <section id="creatorOrders" class="section">
+        <div class="wrap">
+          <h2 data-i18n="manageOrdersTitle">Manage Studio Orders</h2>
+          <div id="creatorOrdersList" class="orderlist"></div>
+        </div>
+      </section>
+    </div>
+
+    <section id="contract" class="section alt">
+      <div class="wrap contractbox">
+        <div>
+          <span class="eyebrow">WALLET & CONTRACT</span>
+          <h2 data-i18n="chainTitle">Transparent Blockchain Payments</h2>
+          <p data-i18n="chainDesc">The contract records commission name, price, seller, buyer, payment time and status. Artwork and customization details stay off-chain.</p>
+          <p class="muted" data-i18n="limits">The smart contract cannot verify artwork quality or restrict payment to a chosen buyer. Refund rules are enforced by the deployed contract.</p>
+        </div>
+        <div class="panel">
+          <b>Ethereum Sepolia</b>
+          <p><b data-i18n="wallet">Wallet</b>: <span id="walletAddress">Not connected</span></p>
+          <p><b data-i18n="network">Network</b>: <span id="networkValue">—</span></p>
+          <p><b data-i18n="count">Orders</b>: <span id="countValue">—</span></p>
+          <button id="refreshBtn" class="outline" type="button" data-i18n="refresh">Refresh</button>
+          <p class="mono address" id="contractAddress"></p>
+          <a id="contractLink" target="_blank" rel="noopener noreferrer" data-i18n="viewContract">View Smart Contract ↗</a>
+          <p class="tiny" data-i18n="noReal">Sepolia test ETH has no real monetary value.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap footerrow"><b>🐾 PawCraft Studio</b><span>Create Your Dream Virtual Pet.</span><span>Ethereum Sepolia · Testnet Demo</span></div></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <div id="busyOverlay" class="busy" hidden>
+    <div class="busycard">
+      <div class="spinner"></div>
+      <p id="busyText">Waiting for MetaMask...</p>
+      <a id="busyLink" href="#" target="_blank" rel="noopener noreferrer" hidden>View on Etherscan ↗</a>
+    </div>
+  </div>
+</body>
+</html>
